@@ -6,6 +6,14 @@ A standalone viewer for your exported Marble scene, powered by [SparkJS](https:/
 
 To view your scene locally, you'll need to serve the files over HTTP (opening `index.html` directly won't work).
 
+### Using VS Code Live Server
+
+If you're using VS Code, a simple option is the Live Server extension.
+
+1. Install the `Live Server` extension in VS Code.
+2. Open this folder in VS Code.
+3. Right-click `index.html` and choose `Open with Live Server`.
+
 ### Using Python
 
 The easiest way is to use Python's built-in HTTP server:
@@ -30,11 +38,14 @@ npx serve .
 
 ## Files
 
-- `index.html` – The viewer HTML file
-- `spark.module.min.js` – The SparkJS rendering library
-- `scene.json` – Scene manifest containing transforms and file references
-- `*.spz` – Compressed gaussian splat files
-- `*.glb` – 3D mesh files (if applicable)
+- `index.html` – Main scene viewer
+- `audio.html` – Scene viewer with audio support
+- `splat-audio.html` – Splat viewer with positional audio markers
+- `marble-template.html` – Base template file
+- `scene.json` – Scene data and transforms
+- `spark.module.min.js` – SparkJS library
+- `audio/` – Audio files used by the examples
+- `splats/` – Gaussian splat assets
 
 ## Resources
 
