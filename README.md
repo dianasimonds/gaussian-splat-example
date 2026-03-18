@@ -1,10 +1,17 @@
-# Scene Viewer
 
-A standalone viewer for your exported Marble scene, powered by [SparkJS](https://sparkjs.dev).
+# Gaussian Splat VR Scene Example
 
-## Quickstart
+This project is an interactive 3D scene viewer using Three.js and Spark.js, featuring a Gaussian splat model and spatial audio emitters. The scene includes:
 
-To view your scene locally, you'll need to serve the files over HTTP (opening `index.html` directly won't work).
+- A loaded 3D world model (PLY format)
+- Animated bird silhouettes flying over the water
+- Spatialized audio sources (birds and waves)
+- Simple UI controls for toggling audio and mesh visibility
+
+# Quickstart
+
+
+To view your scene locally, you'll need to serve the files over HTTP (opening `index.html` or `splat-audio.html` directly won't work).
 
 ### Using VS Code Live Server
 
@@ -36,6 +43,7 @@ Alternatively, if you have Node.js installed:
 npx serve .
 ```
 
+
 ## Files
 
 - `index.html` – Main scene viewer
@@ -46,6 +54,18 @@ npx serve .
 - `spark.module.min.js` – SparkJS library
 - `audio/` – Audio files used by the examples
 - `splats/` – Gaussian splat assets
+
+
+## Requirements
+- Modern web browser with ES module support
+- Local server (do not open HTML files directly)
+
+## Credits
+- [Three.js](https://threejs.org/)
+- [Spark.js](https://sparkjs.dev/)
+
+---
+Created by Diana Simonds
 
 ## Resources
 
