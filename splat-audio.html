@@ -50,13 +50,13 @@
   </div>
 
   <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/0.180.0/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/",
-        "@sparkjsdev/spark": "./spark.module.min.js"
-      }
-    }
+{
+  "imports": {
+    "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/0.178.0/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.178.0/examples/jsm/",
+    "@sparkjsdev/spark": "https://sparkjs.dev/releases/spark/0.1.10/spark.module.js"
+  }
+}
   </script>
 
   <script type="module">
@@ -143,8 +143,8 @@
     }
 
     const emitters = await Promise.all([
-      addEmitter([0.24656978419511813, 0.0668756835999589, -3.786995722825606], "./audio/rattle.mp3", 0.35, 0xa1b70d),
-      addEmitter([-1.3179427394509902, -0.13402284789000768, 0.6756281962153219], "./audio/rain.mp3", 0.7, 0xe89923),
+      addEmitter([0.24656978419511813, 0.0668756835999589, -3.786995722825606], "./assets/audio/birds.mp3", 0.35, 0xa1b70d),
+      addEmitter([-1.3179427394509902, -0.13402284789000768, 0.6756281962153219], "./assets/audio/waves.mp3", 0.7, 0xe89923),
     ]);
     let audioMeshesVisible = true;
 
@@ -201,8 +201,53 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
 
+    // --- Bird Silhouettes ---
+    function createBirdShape() {
+      // Stylized bird: wings, body, tail
+      const shape = new THREE.Shape();
+      shape.moveTo(-0.4, 0.05); // left wing tip
+      shape.quadraticCurveTo(-0.2, 0.18, 0, 0.08); // left wing curve to body
+      shape.quadraticCurveTo(0.05, 0.1, 0.12, 0.18); // body to right wing base
+      shape.quadraticCurveTo(0.25, 0.22, 0.4, 0.05); // right wing tip
+      shape.quadraticCurveTo(0.18, 0.08, 0.08, 0.03); // right wing to body
+      shape.lineTo(0.03, -0.01); // body to tail top
+      shape.lineTo(0, -0.08); // tail tip
+      shape.lineTo(-0.03, -0.01); // tail top to body
+      shape.quadraticCurveTo(-0.08, 0.03, -0.4, 0.05); // close left wing
+      return shape;
+    }
+
+    const birdMaterial = new THREE.MeshBasicMaterial({ color: 0x222222, side: THREE.DoubleSide });
+    const birdGeometry = new THREE.ShapeGeometry(createBirdShape());
+
+    // Create two birds
+    const bird1 = new THREE.Mesh(birdGeometry, birdMaterial);
+    const bird2 = new THREE.Mesh(birdGeometry, birdMaterial);
+
+    // Initial positions (above water, in the sky)
+    bird1.position.set(-1, 1.5, -2);
+    bird1.scale.set(1.2, 1.2, 1.2);
+    bird2.position.set(1, 1.7, -2.5);
+    bird2.scale.set(0.9, 0.9, 0.9);
+
+    scene.add(bird1);
+    scene.add(bird2);
+
+    // Animate birds in the render loop
+    let birdTime = 0;
     renderer.setAnimationLoop(() => {
       controls.update(localFrame, camera);
+
+      // Animate birds: simple sine wave for flapping and flying
+      birdTime += 0.01;
+      bird1.position.x = -1 + Math.sin(birdTime) * 0.7;
+      bird1.position.y = 1.5 + Math.sin(birdTime * 2) * 0.1;
+      bird1.rotation.z = Math.sin(birdTime) * 0.2;
+
+      bird2.position.x = 1 - Math.sin(birdTime * 0.8) * 0.6;
+      bird2.position.y = 1.7 + Math.sin(birdTime * 1.7) * 0.12;
+      bird2.rotation.z = -Math.sin(birdTime * 0.8) * 0.18;
+
       renderer.render(scene, camera);
     });
   </script>
