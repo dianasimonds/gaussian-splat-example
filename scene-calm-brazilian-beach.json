@@ -1,0 +1,16 @@
+{
+  "splats": [
+    {
+      "filename": "assets/models/calm-brazilian-beach-paradise.ply",
+      "transform": {
+        "translation": [0, 0, 0],
+        "quaternion": [0, 0, 0, 1],
+        "scale": 1
+      }
+    }
+  ],
+  "meshes": [],
+  "metadata": {
+    "name": "Calm Brazilian Beach Scene"
+  }
+}
