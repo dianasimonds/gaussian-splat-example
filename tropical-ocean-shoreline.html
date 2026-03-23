@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Splat Viewer - Tropical Ocean Shoreline</title>
+  <style>
+    body {
+      margin: 0;
+    }
+
+    canvas {
+      display: block;
+      touch-action: none;
+    }
+  </style>
+</head>
+
+<body>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/0.180.0/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/",
+        "@sparkjsdev/spark": "./assets/models/diana/spark.module.min.js"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from "three";
+    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+    import { SparkRenderer, SplatMesh, SparkControls, utils } from "@sparkjsdev/spark";
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 1000);
+
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const localFrame = new THREE.Group();
+    scene.add(localFrame);
+    localFrame.add(camera);
+
+    const spark = new SparkRenderer({
+      renderer,
+      maxStdDev: Math.sqrt(5),
+    });
+    scene.add(spark);
+
+    const controls = new SparkControls({
+      canvas: renderer.domElement,
+    });
+    controls.pointerControls.reverseRotate = utils.isMobile();
+    controls.pointerControls.rotateSpeed *= 2.0;
+    controls.pointerControls.slideSpeed *= 0.75;
+
+    // Load the tropical ocean shoreline SPZ model
+    const splatMesh = new SplatMesh({
+      url: "./assets/models/diana/tropical-ocean-shoreline-sketch.spz",
+      lod: true,
+    });
+    scene.add(splatMesh);
+
+    window.addEventListener("resize", () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    renderer.setAnimationLoop(() => {
+      controls.update(localFrame, camera);
+      renderer.render(scene, camera);
+    });
+  </script>
+  <audio controls autoplay loop>
+    <source src="./assets/audio/waves.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+</body>
+
+</html>
